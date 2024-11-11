@@ -1,0 +1,103 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\BulletTester\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|c:\\users\\usuario\\documents\\bullettester\\bulletfield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|solutionrelative:bulletfield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|c:\\users\\usuario\\documents\\bullettester\\scripts\\patterns\\falling.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|solutionrelative:scripts\\patterns\\falling.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|c:\\users\\usuario\\documents\\bullettester\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|solutionrelative:main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|c:\\users\\usuario\\documents\\bullettester\\scripts\\patterns\\pattern.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|solutionrelative:scripts\\patterns\\pattern.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|c:\\users\\usuario\\documents\\bullettester\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0B922A91-2384-4B27-9086-5DFFAEF432D7}|BulletTester.csproj|solutionrelative:ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Falling.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Scripts\\Patterns\\Falling.cs",
+              "RelativeDocumentMoniker": "Scripts\\Patterns\\Falling.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Scripts\\Patterns\\Falling.cs",
+              "RelativeToolTip": "Scripts\\Patterns\\Falling.cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAowFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-06T02:18:11.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UI.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\BulletTester\\UI.cs",
+              "RelativeDocumentMoniker": "UI.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\BulletTester\\UI.cs",
+              "RelativeToolTip": "UI.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAIwKQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T22:24:38.318Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Pattern.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Scripts\\Patterns\\Pattern.cs",
+              "RelativeDocumentMoniker": "Scripts\\Patterns\\Pattern.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Scripts\\Patterns\\Pattern.cs",
+              "RelativeToolTip": "Scripts\\Patterns\\Pattern.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T02:18:26.092Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Main.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Main.cs",
+              "RelativeDocumentMoniker": "Main.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\BulletTester\\Main.cs",
+              "RelativeToolTip": "Main.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-28T22:12:50.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BulletField.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\BulletTester\\BulletField.cs",
+              "RelativeDocumentMoniker": "BulletField.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\BulletTester\\BulletField.cs",
+              "RelativeToolTip": "BulletField.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBYAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-26T21:37:38.374Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

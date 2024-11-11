@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=3 uid="uid://37mxyk4jsphb"]
+
+[ext_resource type="Script" path="res://Main.cs" id="1_pnmmp"]
+[ext_resource type="PackedScene" uid="uid://c0do5mem47fhn" path="res://BulletField.tscn" id="2_cnnu5"]
+[ext_resource type="Script" path="res://UI.cs" id="3_k8swd"]
+[ext_resource type="LabelSettings" uid="uid://c56igbaqgb4i2" path="res://Assets/Labels.tres" id="3_t6w05"]
+[ext_resource type="Texture2D" uid="uid://cifkbte2lvfs" path="res://Assets/Lines.png" id="5_5ynyc"]
+[ext_resource type="Texture2D" uid="uid://quchg18kf10i" path="res://Assets/Lines_Pressed.png" id="6_ltssw"]
+[ext_resource type="Texture2D" uid="uid://diroul1jv5ioc" path="res://Assets/Lines_Focused.png" id="7_ty4em"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_pnmmp")
+
+[node name="BulletField" parent="." instance=ExtResource("2_cnnu5")]
+focus_mode = 2
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+focus_mode = 1
+mouse_filter = 1
+script = ExtResource("3_k8swd")
+
+[node name="FPS" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "FPS"
+label_settings = ExtResource("3_t6w05")
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Bullets" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Bullets"
+label_settings = ExtResource("3_t6w05")
+horizontal_alignment = 2
+
+[node name="Panel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -176.0
+grow_vertical = 2
+
+[node name="VSplitContainer" type="VSplitContainer" parent="UI/Panel"]
+layout_mode = 0
+offset_right = 176.0
+offset_bottom = 648.0
+split_offset = 460
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/Panel/VSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Panel/VSplitContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel/VSplitContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="PatternMenu" type="PanelContainer" parent="UI/Panel/VSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Panel/VSplitContainer/PatternMenu"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel/VSplitContainer/PatternMenu/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Lines" type="Panel" parent="UI/Panel"]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 200.0
+offset_bottom = 24.0
+
+[node name="TextureButton" type="TextureButton" parent="UI/Panel/Lines"]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+texture_normal = ExtResource("5_5ynyc")
+texture_pressed = ExtResource("6_ltssw")
+texture_hover = ExtResource("5_5ynyc")
+texture_disabled = ExtResource("5_5ynyc")
+texture_focused = ExtResource("7_ty4em")
+
+[connection signal="pressed" from="UI/Panel/Lines/TextureButton" to="UI" method="OnClickShowButton"]

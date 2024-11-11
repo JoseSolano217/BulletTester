@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://x4y5rakgba1j"]
+
+[ext_resource type="Script" path="res://Controls/Vector2Spinbox.cs" id="1_sr330"]
+
+[node name="Vector2Spinbox" type="Panel"]
+custom_minimum_size = Vector2(184, 37)
+anchors_preset = -1
+anchor_right = 0.16
+anchor_bottom = 0.057
+offset_right = -0.320007
+offset_bottom = 0.0639992
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_sr330")
+
+[node name="X" type="SpinBox" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.063
+offset_top = -14.5
+offset_right = -5.0005
+offset_bottom = 16.5
+grow_horizontal = 2
+grow_vertical = 2
+allow_greater = true
+allow_lesser = true
+prefix = "X:"
+
+[node name="Y" type="SpinBox" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 5.937
+offset_top = -14.5
+offset_right = 88.9995
+offset_bottom = 16.5
+grow_horizontal = 2
+grow_vertical = 2
+allow_greater = true
+allow_lesser = true
+prefix = "Y:"
+
+[connection signal="value_changed" from="X" to="." method="ChangeXValue"]
+[connection signal="value_changed" from="Y" to="." method="ChangeYValue"]

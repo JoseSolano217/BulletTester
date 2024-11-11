@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwl6hgwdokca5"]
+
+[ext_resource type="Script" path="res://ModManager.cs" id="1_2m3vx"]
+
+[node name="ModManager" type="Node"]
+script = ExtResource("1_2m3vx")
+
+[node name="Export" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Export"
+
+[node name="Import" type="Button" parent="."]
+offset_top = 64.0
+offset_right = 62.0
+offset_bottom = 95.0
+text = "Import"
+
+[connection signal="pressed" from="Export" to="." method="OnExportPressed"]
+[connection signal="pressed" from="Import" to="." method="OnImportPressed"]
