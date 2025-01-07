@@ -47,9 +47,9 @@ public class Pattern
     public float width = 0;
     public float height = 0;
     [Bindable(true)]
-    public int Timer { get; set; } = 0;
+    public float Timer { get; set; } = 0;
     [Bindable(true)]
-    public int MaxTimer { get; set; } = 60;
+    public float MaxTimer { get; set; } = 1;
     [Bindable(true)]
     public int Cycle { get; set; } = 0;
     [Bindable(true)]
@@ -62,8 +62,6 @@ public class Pattern
     public float Ai2 { get; set; } = 0;
     [Bindable(true)]
     public float Ai3 { get; set; } = 0;
-    [Bindable(true)]
-    public float Ai4 { get; set; } = 0;
 
     public virtual void SetDefaults()
     {
@@ -74,10 +72,10 @@ public class Pattern
         return true;
     }
 
-    public virtual void Update(Vector2? mousePos)
+    public virtual void Update(Vector2? mousePos, double delta)
     {
         if (!PreUpdate(mousePos)) return;
-        Timer++;
+        Timer += (float)delta;
         if (Timer >= MaxTimer)
         {
             Cycle++;

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
 public partial class Main : Node2D
@@ -46,7 +45,8 @@ public partial class Main : Node2D
         viewportRect = GetViewportRect();
         if (!paused)
         {
-            myPattern.Update(new Vector2(field.MouseCollider.GetCenter().X, field.MouseCollider.GetCenter().Y));
+            myPattern.Update(new Vector2(field.MouseCollider.GetCenter().X, field.MouseCollider.GetCenter().Y), 
+                delta);
         }
 
         HandleMouseInputs();

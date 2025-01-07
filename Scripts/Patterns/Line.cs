@@ -18,9 +18,9 @@ public class Line : Pattern
     [Bindable(true)]
     public int NumberOfShots { get; set; } = 20;
     [Bindable(true)]
-    public int Interval { get; set; } = 300;
+    public float Interval { get; set; } = 2f;
     [Bindable(true)]
-    public int NormalMaxTimer { get; set; } = 10;
+    public float NormalMaxTimer { get; set; } = 0.1f;
     [Bindable(true)]
     public bool PointType { get; set; } = false;
 
@@ -70,7 +70,7 @@ public class Line : Pattern
                 Vector2 direction = new Vector2(1, 0).Rotated(rotation);
 
                 CreateSimple(position, direction, 300, 1, 10, 10, rotation, Type,
-                    spriteType, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                    spriteType, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
             }
             if (Cycle >= MaxCycle - 1)
             {

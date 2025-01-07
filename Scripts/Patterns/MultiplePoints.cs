@@ -7,9 +7,9 @@ public class MultiplePoints : Pattern
     [Bindable(true)]
     public int NumberOfShots { get; set; } = 12;
     [Bindable(true)]
-    public int CooldownTimer { get; set; } = 120;
+    public float CooldownTimer { get; set; } = 5;
     [Bindable(true)]
-    public int ShootInterval { get; set; } = 10;
+    public float ShootInterval { get; set; } = 0.1f;
     [Bindable(true)]
     public int BulletSpeed { get; set; } = 200;
     [Bindable(true)]
@@ -59,7 +59,7 @@ public class MultiplePoints : Pattern
                 bulletDirection = bulletDirection.Rotated(Mathf.Pi * 2 / NumberOfShots);
 
                 CreateSimple(position, bulletDirection, 200, 1, rotation: bulletDirection.Angle(), script: Type,
-                    sprite: 0, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                    sprite: 0, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
                 //CreateSimple(position, bulletDirection, 200, 1,
                 //    rotation: bulletDirection.Angle(), sprite: 0, r: color.R, g: color.G, b: color.B);
             }

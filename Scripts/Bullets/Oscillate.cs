@@ -11,7 +11,7 @@ public class Oscillate : Bullet
     {
         if (ai1 <= 0 || ai2 <= 0 || ai3 <= 0) return;
         timeAdjusted = time * ai2;
-        if (timeAdjusted <= Mathf.Pi*2*ai1)
+        if (timeAdjusted <= Mathf.Pi*ai1)
         {
             speed = ai3 * Mathf.Cos(timeAdjusted);
         }

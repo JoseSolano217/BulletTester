@@ -80,7 +80,7 @@ public class Falling : Pattern
                     }
 
                     CreateSimple(position, direction, Speed, 1, 10, 10, Mathf.Pi/2, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
                 }
                 if (Left)
                 {
@@ -98,7 +98,7 @@ public class Falling : Pattern
                     }
 
                     CreateSimple(position, direction, Speed, 1, 10, 10, Mathf.Pi, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
                 }
                 if (Bottom)
                 {
@@ -116,7 +116,7 @@ public class Falling : Pattern
                     }
 
                     CreateSimple(position, direction, Speed, 1, 10, 10, 3*Mathf.Pi/2, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
                 }
                 if (Right)
                 {
@@ -134,7 +134,7 @@ public class Falling : Pattern
                     }
 
                     CreateSimple(position, direction, Speed, 1, 10, 10, 0, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: Ai4);
+                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
                 }
             }
         }

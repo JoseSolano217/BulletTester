@@ -120,7 +120,7 @@ public partial class UI : Control
                     spinBox.Value = (int)attributeValue;
                     int index = i;
                     spinBox.ValueChanged += (val) => OnValueChange(val, index);
-                    //spinBox.Connect("value_changed", new Callable(this, "OnValueChange"), (uint)i);
+
                     area.GetChild(0).AddChild(spinBox);
                 } else if (attributeType == typeof(double) || attributeType == typeof(float) || 
                     attributeType == typeof(Single))
@@ -137,7 +137,7 @@ public partial class UI : Control
                     spinBox.Value = (Single)attributeValue;
                     int index = i;
                     spinBox.ValueChanged += (val) => OnValueChange(val, index);
-                    //spinBox.Connect("value_changed", new Callable(this, "OnValueChange"), (uint)i);
+
                     area.GetChild(0).AddChild(spinBox);
                 } else if (attributeType == typeof(bool))
                 {
@@ -149,7 +149,7 @@ public partial class UI : Control
                     checkButton.ButtonPressed = (bool)attributeValue;
                     int index = i;
                     checkButton.Toggled += (val) => OnToggled(val, index);
-                    //checkButton.Connect("toggled", new Callable(this, "OnToggled"), (uint)i);
+
                     area.GetChild(0).AddChild(checkButton);
                 } else if(attributeType == typeof(Vector2))
                 {
@@ -170,11 +170,6 @@ public partial class UI : Control
                 GetNode(areaNodePath).AddChild(area);
                 label.Text = area.GetIndex() + ". " + label.Text;
                 propertyConnection[i] = area.GetIndex();
-
-                //GD.Print("Attribute " + i + ": ");
-                //GD.Print("Name: " + TypeDescriptor.GetProperties(myPattern)[i].Name);
-                //GD.Print("Value: " + TypeDescriptor.GetProperties(myPattern)[i].GetValue(myPattern));
-                //TypeDescriptor.GetProperties(myPattern)[i].IsReadOnly;
             }
         }
     }

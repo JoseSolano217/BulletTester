@@ -45,7 +45,7 @@ public class Flower : Pattern
                 float addedSpeed = 1 + Mathf.Sin((direction.Angle() - BaseRotation) * Petals) * 0.3f;
                 CreateSimple(position, direction, 120 * addedSpeed, 1, rotation: rotation, script: Type,
                     sprite: spriteType, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, 
-                    ai4: Ai4);
+                    ai4: 0);
             }
         }
         BaseRotation += RotationPerFrame;

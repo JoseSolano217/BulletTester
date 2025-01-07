@@ -45,11 +45,8 @@ public partial class BulletField : Control
 
         if (!main.paused)
         {
-            int index = 0;
             foreach (var bullet in ActiveBullets)
             {
-                //position.X, position.Y, direction.X, direction.Y, speed, shape, sizeX, sizeY,
-                // rotation, 0, script, sprite, r, g, b, a
                 if ((int)bullet[10] > 0 && (int)bullet[10] < Patterns.Length)
                 {
                     Patterns[(int)bullet[10]].UpdateBullet(ref bullet[0], ref bullet[1], ref bullet[2], ref bullet[3],
@@ -57,12 +54,8 @@ public partial class BulletField : Control
                     ref bullet[11], ref bullet[12], ref bullet[13], ref bullet[14], ref bullet[15], ref bullet[16],
                     ref bullet[17], ref bullet[18], ref bullet[19], main.viewportRect, MouseCollider);
                 }
-                if (PreSpeed(bullet, delta))
-                {
-                    AddSpeed(bullet, delta);
-                }
+                AddSpeed(bullet, delta);
                 bullet[9] += (float)delta;
-                index++;
             }
         }
 
