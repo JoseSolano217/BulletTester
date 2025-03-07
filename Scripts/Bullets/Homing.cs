@@ -14,9 +14,8 @@ public class Homing : Bullet
     Vector2 mousePos = Vector2.Zero;
     Vector2 directionTo = Vector2.Zero;
     public override void UpdateBullet(ref float centerX, ref float centerY, ref float directionX,
-        ref float directionY, ref float speed, ref float shape, ref float sizeX, ref float sizeY,
-        ref float rotation, ref float time, ref float sprite, ref float r, ref float g, ref float b, ref float a,
-        ref float ai1, ref float ai2, ref float ai3, ref float ai4, Rect2 viewport, Aabb mouse)
+        ref float directionY, ref float speed, ref float time, ref float r, ref float g, ref float b, ref float a,
+        ref float ai1, ref float ai2, ref float ai3, Rect2 viewport, Aabb mouse)
     {
         direction.X = directionX;
         direction.Y = directionY;
@@ -30,10 +29,6 @@ public class Homing : Bullet
             direction = direction.Lerp(directionTo, ai1);
             directionX = direction.X;
             directionY = direction.Y;
-            if (sprite == 0)
-            {
-                rotation = direction.Angle();
-            }
         }
     }
 }

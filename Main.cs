@@ -8,7 +8,6 @@ public partial class Main : Node2D
     RandomNumberGenerator random = new RandomNumberGenerator();
     bool mouseColliding = true;
     public Rect2 viewportRect;
-    ModManager modManager = new ModManager();
 
     public List<Pattern> allPatterns = new List<Pattern>();
     public int patternIndex = 0;
@@ -21,13 +20,8 @@ public partial class Main : Node2D
     [Signal]
     public delegate void PatternListReloadEventHandler();
 
-    public delegate void AddBullet(float centerX, float centerY, float directionX, float directionY, float speed,
-        float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1,
-        float r = 1, float g = 1, float b = 1, float a = 1);
-    //public AddBullet CreateProjectile = ProjectileAddAPI;
-    public delegate void SimplerAddBullet(Vector2 position, Vector2 direction, float speed, float shape = 0, 
-        float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1, float r = 1, 
-        float g = 1, float b = 1, float a = 1);
+    public delegate void SimplerAddBullet(Vector2 position, Vector2 direction, float speed, float script = -1, 
+        float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1);
     public SimplerAddBullet SimplerCreateProjectile = ProjectileAddAPI;
 
     public override void _Ready()
@@ -179,49 +173,10 @@ public partial class Main : Node2D
         uiControl.Visible = true;
     }
 
-    public void ImportMods()
+    public static void ProjectileAddAPI(Vector2 position, Vector2 direction, float speed, float script = -1, 
+        float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1)
     {
-        FileDialog folderSelection = new FileDialog();
-        folderSelection.Access = FileDialog.AccessEnum.Filesystem;
-        folderSelection.FileMode = FileDialog.FileModeEnum.OpenDir;
-        folderSelection.Title = "Select a folder";
-        folderSelection.Size = new Vector2I(550, 400);
-
-        folderSelection.DirSelected += FolderSelected;
-        
-        AddChild(folderSelection);
-
-        folderSelection.Visible = true;
-    }
-
-    public void FolderSelected(string dir)
-    {
-        modManager.importPath = dir;
-
-        modManager.Import();
-        GD.Print("Finished importing");
-        /*GD.Print($"Mod list with a size of {modManager.mods.Count}: ");
-        foreach (var mod in modManager.mods)
-        {
-            GD.Print($"This mod: {mod}: ");
-            var instance = mod.Instantiate();
-            GD.Print($"Loaded mod {instance.GetClass()}");
-            GD.Print($"Type: {instance.GetClass()}");
-        }*/
-    }
-
-    /*public static void ProjectileAddAPI(float centerX, float centerY, float directionX, float directionY, float speed,
-        float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1,
-        float r = 1, float g = 1, float b = 1, float a = 1)
-    {
-        field.AddProjectile(centerX, centerY, speed, shape, sizeX, sizeY, rotation, script, sprite, r, g, b, a);
-    }*/
-
-    public static void ProjectileAddAPI(Vector2 position, Vector2 direction, float speed, float shape = 0, float sizeX = 10,
-        float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1, float r = 1, float g = 1,
-        float b = 1, float a = 1)
-    {
-        field.AddProjectile(position, direction, speed, shape, sizeX, sizeY, rotation, script, sprite, r, g, b, a);
+        field.AddProjectile(position, direction, speed, script, sprite, r, g, b, a);
     }
 
     public int BulletCountAPI()

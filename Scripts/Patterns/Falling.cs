@@ -79,8 +79,8 @@ public class Falling : Pattern
                         position = new Vector2(widthOver2 + random.RandfRange(-newWidth/2, newWidth / 2), 1);
                     }
 
-                    CreateSimple(position, direction, Speed, 1, 10, 10, Mathf.Pi/2, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                        ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Left)
                 {
@@ -97,8 +97,8 @@ public class Falling : Pattern
                         position = new Vector2(1, heightOver2 + random.RandfRange(-newHeight/2, newHeight/2));
                     }
 
-                    CreateSimple(position, direction, Speed, 1, 10, 10, Mathf.Pi, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                        ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Bottom)
                 {
@@ -115,8 +115,8 @@ public class Falling : Pattern
                         position = new Vector2(widthOver2 + random.RandfRange(-newWidth/2, newWidth / 2), height - 1);
                     }
 
-                    CreateSimple(position, direction, Speed, 1, 10, 10, 3*Mathf.Pi/2, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                        ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Right)
                 {
@@ -133,8 +133,8 @@ public class Falling : Pattern
                         position = new Vector2(width - 1, heightOver2 + random.RandfRange(-newHeight/2, newHeight/2));
                     }
 
-                    CreateSimple(position, direction, Speed, 1, 10, 10, 0, Type,
-                        spriteType, color.R, color.G, color.B, Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                        ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
             }
         }

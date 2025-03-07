@@ -58,8 +58,8 @@ public class MultiplePoints : Pattern
                 }
                 bulletDirection = bulletDirection.Rotated(Mathf.Pi * 2 / NumberOfShots);
 
-                CreateSimple(position, bulletDirection, 200, 1, rotation: bulletDirection.Angle(), script: Type,
-                    sprite: 0, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                CreateSimple(position, bulletDirection, 200, script: Type,
+                    sprite: 0, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 //CreateSimple(position, bulletDirection, 200, 1,
                 //    rotation: bulletDirection.Angle(), sprite: 0, r: color.R, g: color.G, b: color.B);
             }

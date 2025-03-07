@@ -32,16 +32,9 @@ public class Pattern
     [Bindable(true)]
     public int SecondaryPalette { get; set; } = -1;
 
-    public delegate void BulletCreate(float centerX, float centerY, float directionX, float directionY,
-        float speed, float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1,
-        float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1, float ai1 = 0, float ai2 = 0, 
-        float ai3 = 0, float ai4 = 0);
     public delegate void SimplifiedBulletCreate(Vector2 position, Vector2 direction, float speed, 
-        float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1, 
-        float r = 1, float g = 1, float b = 1, float a = 1, float ai1 = 0, float ai2 = 0, float ai3 = 0, 
-        float ai4 = 0);
-
-    public BulletCreate Create { get; set; }
+        float script = -1, float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1, float ai1 = 0, 
+        float ai2 = 0, float ai3 = 0);
     public SimplifiedBulletCreate CreateSimple { get; set; }
 
     public float width = 0;
@@ -95,32 +88,9 @@ public class Pattern
         this.height = height;
     }
 
-    //Func<float, float, float, float, float, float, float, float, float, float, float, float, float,
-    //float, float, float>
-    // Action<float, float, float, float, float, float, float, float, float, float, float, float, float,
-    //float, float> create1, Delegate create2
-
-    public void SetDelegate1(Delegate create)
-    {
-        Create = (BulletCreate)create;
-    }
-
-    public void SetDelegate2(Delegate create)
+    public void SetDelegate(Delegate create)
     {
         CreateSimple = (SimplifiedBulletCreate)Delegate.CreateDelegate(typeof(SimplifiedBulletCreate), 
             create.Target, create.Method);
     }
-
-    /*private static void Worthless(float centerX, float centerY, float directionX, float directionY,
-        float speed, float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1,
-        float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1)
-    {
-        GD.Print("Set a worthless method for a delegate, as a dummy value");
-    }
-    private static void Worthless(Vector2 position, Vector2 direction, float speed,
-        float shape = 0, float sizeX = 10, float sizeY = 10, float rotation = 0, float script = -1, float sprite = 1,
-        float r = 1, float g = 1, float b = 1, float a = 1)
-    {
-        GD.Print("Set a simplified worthless method for a delegate, as a dummy value");
-    }*/
 }

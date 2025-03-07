@@ -69,8 +69,8 @@ public class Line : Pattern
                 float rotation = BaseRotation + i * Mathf.Pi * 2 / NumberOfShots;
                 Vector2 direction = new Vector2(1, 0).Rotated(rotation);
 
-                CreateSimple(position, direction, 300, 1, 10, 10, rotation, Type,
-                    spriteType, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3, ai4: 0);
+                CreateSimple(position, direction, 300, Type, spriteType, r: color.R, g: color.G, b: color.B, 
+                    a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3);
             }
             if (Cycle >= MaxCycle - 1)
             {
