@@ -3,7 +3,6 @@ using System.ComponentModel;
 
 public class MultiplePoints : Pattern
 {
-    Vector2 centerPosition;
     [Bindable(true)]
     public int NumberOfShots { get; set; } = 12;
     [Bindable(true)]
@@ -19,10 +18,9 @@ public class MultiplePoints : Pattern
 
     public override void SetDefaults()
     {
-        centerPosition = new Vector2(width / 2, height / 2);
     }
 
-    public override bool PreUpdate(Vector2? mousePos)
+    public override bool PreUpdate(Vector2? mousePos, Vector2 pos)
     {
         if (Cycle == MaxCycle - 1)
         {
@@ -34,9 +32,9 @@ public class MultiplePoints : Pattern
         }
         if (Timer == 0)
         {
-            Vector2 position = centerPosition + new Vector2(1, 0)
+            Vector2 position = pos + new Vector2(1, 0)
                 .Rotated(CenterRotationOffset * (Cycle + 1)) * CenterOffset * (Cycle + 1);
-            Vector2 direction = position.DirectionTo(centerPosition);
+            Vector2 direction = position.DirectionTo(pos);
             Vector2 bulletDirection = direction;
             Color color = new Color(1, 1, 1);
             float division = 1f / NumberOfShots;
@@ -59,11 +57,11 @@ public class MultiplePoints : Pattern
                 bulletDirection = bulletDirection.Rotated(Mathf.Pi * 2 / NumberOfShots);
 
                 CreateSimple(position, bulletDirection, 200, script: Type,
-                    sprite: 0, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3);
+                    sprite: SpriteType, r: color.R, g: color.G, b: color.B, a: Alpha, ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 //CreateSimple(position, bulletDirection, 200, 1,
                 //    rotation: bulletDirection.Angle(), sprite: 0, r: color.R, g: color.G, b: color.B);
             }
         }
-        return base.PreUpdate(mousePos);
+        return base.PreUpdate(mousePos, pos);
     }
 }

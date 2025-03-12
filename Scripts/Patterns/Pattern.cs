@@ -6,31 +6,69 @@ using System.ComponentModel;
 public class Pattern
 {
     public RandomNumberGenerator random = new RandomNumberGenerator();
-    // Easy (Blue/Green)
-    public List<Color>[] palette = { new List<Color>() {
-        new Color(0.35f, 0.45f, 0.85f), new Color(0.35f, 0.8f, 0.475f)
-    // Normal (Yellow/Green)
+    // Gray
+    public List<Color>[] palette = { new List<Color>()
+    {
+        new Color(178, 178, 178)
+    },
+    // Red
+        new List<Color>()
+    {
+        new Color(255, 66, 66)
+    },
+    // Pink
+        new List<Color>()
+    {
+        new Color(255, 57, 252)
+    },
+    // Blue
+        new List<Color>()
+    {
+        new Color(57, 57, 255)
+    },
+    // Cyan
+        new List<Color>()
+    {
+        new Color(66, 227, 255)
+    },
+    // Green
+        new List<Color>()
+    {
+        new Color(66, 255, 110)
+    },
+    // Yellow
+        new List<Color>()
+    {
+        new Color(255, 252, 35)
+    },
+    // Easy (Blue/Cyan)
+        new List<Color>() {
+        new Color(57, 57, 255), new Color(66, 227, 255)
+    // Normal (Blue/Cyan/Green)
     }, new List<Color>() {
-        new Color(0.8f, 0.85f, 0.4f), new Color(0.35f, 0.8f, 0.475f)
-    // Hard (Yellow/Red)
+        new Color(57, 57, 255), new Color(66, 227, 255), new Color(66, 255, 110)
+    // Hard (Green/Yellow/Red)
     }, new List<Color>() {
-        new Color(0.8f, 0.85f, 0.4f), new Color(0.9f, 0.3f, 0.3f)
-    // Anomalous (Purple/Red)
+        new Color(66, 255, 110), new Color(255, 252, 35), new Color(255, 66, 66)
+    // Anomalous (Pink/Red)
     }, new List<Color>() {
-        new Color(0.55f, 0.2f, 0.55f), new Color(0.9f, 0.3f, 0.3f)
+        new Color(255, 66, 66), new Color(255, 57, 252)
     // Monochrome (Black/White)
     }, new List<Color>() {
-        new Color(0f, 0f, 0f), new Color(1f, 1f, 1f)
-    // Temperature (Red/Blue)
+        new Color(178, 178, 178), new Color(0, 0, 0)
+    // All
     }, new List<Color>() {
-        new Color(1f, 0.4f, 0.4f), new Color(0.5f, 0.5f, 1f)
+        new Color(178, 178, 178), new Color(255, 66, 66), new Color(255, 57, 252), new Color(57, 57, 255), 
+        new Color(66, 227, 255), new Color(66, 255, 110), new Color(255, 252, 35), new Color(0, 0, 0)
     }};
+    [Bindable(true)]
+    public int SpriteType { get; set; } = 1;
     [Bindable(true)]
     public float Alpha { get; set; } = 1f;
     [Bindable(true)]
-    public int MainPalette { get; set; } = -1;
+    public int MainPalette { get; set; } = 0;
     [Bindable(true)]
-    public int SecondaryPalette { get; set; } = -1;
+    public int SecondaryPalette { get; set; } = 0;
 
     public delegate void SimplifiedBulletCreate(Vector2 position, Vector2 direction, float speed, 
         float script = -1, float sprite = 1, float r = 1, float g = 1, float b = 1, float a = 1, float ai1 = 0, 
@@ -60,14 +98,14 @@ public class Pattern
     {
     }
 
-    public virtual bool PreUpdate(Vector2? mousePos)
+    public virtual bool PreUpdate(Vector2? mousePos, Vector2 position)
     {
         return true;
     }
 
-    public virtual void Update(Vector2? mousePos, double delta)
+    public virtual void Update(Vector2? mousePos, double delta, Vector2 position)
     {
-        if (!PreUpdate(mousePos)) return;
+        if (!PreUpdate(mousePos, position)) return;
         Timer += (float)delta;
         if (Timer >= MaxTimer)
         {
@@ -75,10 +113,10 @@ public class Pattern
             Timer = 0;
         }
         if (Cycle >= MaxCycle) Cycle = 0;
-        PostUpdate(mousePos);
+        PostUpdate(mousePos, position);
     }
 
-    public virtual void PostUpdate(Vector2? mousePos)
+    public virtual void PostUpdate(Vector2? mousePos, Vector2 position)
     {
     }
 

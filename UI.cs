@@ -22,10 +22,9 @@ public partial class UI : Control
     {
         main = (Main)GetParent();
 
-        Connect("PatternChange", new Callable(main, "SetPattern"));
+        Connect("PatternChange", new Callable(main, "ChangePattern"));
         main.Connect("FinishedPatternChange", new Callable(this, "SetPropertyFields"));
 
-        CallDeferred("SetPropertyFields");
         CallDeferred("SetPatternFields");
     }
 
@@ -56,14 +55,16 @@ public partial class UI : Control
         fps.Text = (60 / (60 * delta)) + " FPS";
         bullets.Text = main.BulletCountAPI() + " Bullets";
 
+        if (main.selectedEmitter == null) return;
+
         foreach (int key in propertyConnection.Keys)
         {
-            PropertyDescriptor descriptor = TypeDescriptor.GetProperties(main.myPattern)[key];
+            PropertyDescriptor descriptor = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[key];
             Label valueShowcaser = (Label)GetNode(areaNodePath).GetChild(propertyConnection[key]).GetChild(0).GetChild(1);
             Node valueContainer = GetNode(areaNodePath).GetChild(propertyConnection[key]).GetChild(0).GetChild(2);
 
-            Type type = descriptor.GetValue(main.myPattern).GetType();
-            Object value = descriptor.GetValue(main.myPattern);
+            Type type = descriptor.GetValue(main.selectedEmitter.GetCurrentPattern()).GetType();
+            Object value = descriptor.GetValue(main.selectedEmitter.GetCurrentPattern());
             if (value == null) continue;
 
             valueShowcaser.Text = value.ToString();
@@ -80,20 +81,22 @@ public partial class UI : Control
             child.QueueFree();
         }
 
-        for (int i = 0; i < TypeDescriptor.GetProperties(main.myPattern).Count; i++)
+        if (main.selectedEmitter == null) return;
+
+        for (int i = 0; i < TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern()).Count; i++)
         {
-            AttributeCollection attribute = TypeDescriptor.GetProperties(main.myPattern)[i].Attributes;
+            AttributeCollection attribute = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].Attributes;
 
             if (attribute[typeof(BindableAttribute)].Equals(BindableAttribute.Yes))
             {
-                if (TypeDescriptor.GetProperties(main.myPattern)[i].GetValue(main.myPattern) == null) continue;
-                Type attributeType = TypeDescriptor.GetProperties(main.myPattern)[i].GetValue(main.myPattern).GetType();
+                if (TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].GetValue(main.selectedEmitter.GetCurrentPattern()) == null) continue;
+                Type attributeType = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].GetValue(main.selectedEmitter.GetCurrentPattern()).GetType();
                 if (attributeType == null) continue;
                 if (attributeType == typeof(Delegate)) continue;
-                Object attributeValue = TypeDescriptor.GetProperties(main.myPattern)[i].GetValue(main.myPattern);
+                Object attributeValue = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].GetValue(main.selectedEmitter.GetCurrentPattern());
                 Label label = new Label();
-                label.Text = AddSpacesToSentence(TypeDescriptor.GetProperties(main.myPattern)[i].Name);
-                if (TypeDescriptor.GetProperties(main.myPattern)[i].IsReadOnly)
+                label.Text = AddSpacesToSentence(TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].Name);
+                if (TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].IsReadOnly)
                 {
                     label.Text += " (Read only)";
                 }
@@ -103,7 +106,7 @@ public partial class UI : Control
 
                 Label valueLabel = new Label();
                 valueLabel.Text = "Value: " + 
-                    TypeDescriptor.GetProperties(main.myPattern)[i].GetValue(main.myPattern).ToString();
+                    TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].GetValue(main.selectedEmitter.GetCurrentPattern()).ToString();
                 area.GetChild(0).AddChild(valueLabel);
 
                 if (attributeType == typeof(int))
@@ -113,7 +116,7 @@ public partial class UI : Control
                     spinBox.AllowLesser = true;
                     spinBox.Step = 1;
                     spinBox.FocusMode = FocusModeEnum.Click;
-                    if (TypeDescriptor.GetProperties(main.myPattern)[i].IsReadOnly)
+                    if (TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].IsReadOnly)
                     {
                         spinBox.Editable = false;
                     }
@@ -130,7 +133,7 @@ public partial class UI : Control
                     spinBox.AllowLesser = true;
                     spinBox.Step = 0.0001;
                     spinBox.FocusMode = FocusModeEnum.Click;
-                    if (TypeDescriptor.GetProperties(main.myPattern)[i].IsReadOnly)
+                    if (TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].IsReadOnly)
                     {
                         spinBox.Editable = false;
                     }
@@ -142,7 +145,7 @@ public partial class UI : Control
                 } else if (attributeType == typeof(bool))
                 {
                     CheckButton checkButton = new CheckButton();
-                    if (TypeDescriptor.GetProperties(main.myPattern)[i].IsReadOnly)
+                    if (TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].IsReadOnly)
                     {
                         checkButton.Disabled = true;
                     }
@@ -154,7 +157,7 @@ public partial class UI : Control
                 } else if(attributeType == typeof(Vector2))
                 {
                     Vector2Spinbox vector2Spinbox = (Vector2Spinbox)vector2Control.Instantiate();
-                    if (!TypeDescriptor.GetProperties(main.myPattern)[i].IsReadOnly)
+                    if (!TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[i].IsReadOnly)
                     {
                         vector2Spinbox.value = (Vector2)attributeValue;
                         int index = i;
@@ -182,8 +185,8 @@ public partial class UI : Control
             child.QueueFree();
         }
 
-        for (int i = 0; i < main.allPatterns.Count; i ++)
-       {
+        for (int i = 0; i < main.allPatterns.Length; i ++)
+        {
             Button patternButton = new Button();
             patternButton.Text = AddSpacesToSentence(main.allPatterns[i].GetType().Name);
 
@@ -206,19 +209,21 @@ public partial class UI : Control
 
     public void OnToggled(bool toggledOn, int index)
     {
-        TypeDescriptor.GetProperties(main.myPattern)[index].SetValue(main.myPattern, toggledOn);
+        TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].SetValue(main.selectedEmitter.GetCurrentPattern(), toggledOn);
     }
 
     public void OnValueChange(double value, int index)
     {
-        Type attributeType = TypeDescriptor.GetProperties(main.myPattern)[index].GetValue(main.myPattern).GetType();
+        if (main.selectedEmitter == null) return;
+        
+        Type attributeType = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].GetValue(main.selectedEmitter.GetCurrentPattern()).GetType();
         if (attributeType == typeof(int))
         {
-            TypeDescriptor.GetProperties(main.myPattern)[index].SetValue(main.myPattern, (int)value);
+            TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].SetValue(main.selectedEmitter.GetCurrentPattern(), (int)value);
         } else if (attributeType == typeof(double) || attributeType == typeof(float) || 
             attributeType == typeof(Single))
         {
-            TypeDescriptor.GetProperties(main.myPattern)[index].SetValue(main.myPattern, (Single)value);
+            TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].SetValue(main.selectedEmitter.GetCurrentPattern(), (Single)value);
         } else
         {
             GD.Print("Failed to change value because the value is not supported.");
@@ -228,10 +233,12 @@ public partial class UI : Control
 
     public void OnValueChange(Vector2 value, int index)
     {
-        Type attributeType = TypeDescriptor.GetProperties(main.myPattern)[index].GetValue(main.myPattern).GetType();
+        if (main.selectedEmitter == null) return;
+
+        Type attributeType = TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].GetValue(main.selectedEmitter.GetCurrentPattern()).GetType();
         if (attributeType == typeof(Vector2))
         {
-            TypeDescriptor.GetProperties(main.myPattern)[index].SetValue(main.myPattern, (Vector2)value);
+            TypeDescriptor.GetProperties(main.selectedEmitter.GetCurrentPattern())[index].SetValue(main.selectedEmitter.GetCurrentPattern(), (Vector2)value);
         }
         else
         {

@@ -1,3 +1,4 @@
+using BulletTester.Scripts;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -5,11 +6,13 @@ using System.Collections.Generic;
 public enum BulletTypes
 {
     Default,
-    AffectedByGravity
+    AffectedByGravity, 
+    Bouncing, 
+    Homing, 
+    Returning, 
+    Waving, 
+    Angling
 }
-
-/*position.X, position.Y, direction.X, direction.Y, speed, 0, script, 
-            sprite, r, g, b, a, ai1, ai2, ai3*/
 public enum BulletComponents
 {
     PositionX, 
@@ -29,16 +32,30 @@ public enum BulletComponents
     Ai3
 }
 
+public enum SpriteTypes
+{
+    Pointy, 
+    Regular, 
+    Small, 
+    Big, 
+    Emitter
+}
+
 public partial class BulletField : Control
 {
     Predicate<float[]> deleteConditions;
     Texture2D[] sprites = new Texture2D[] {
-        (Texture2D)ResourceLoader.Load("res://Assets/bullet.png"), 
-        (Texture2D)ResourceLoader.Load("res://Assets/bullet_2.png")
+        (Texture2D)ResourceLoader.Load("res://Assets/bullet.png"),
+        (Texture2D)ResourceLoader.Load("res://Assets/bullet_2.png"),
+        (Texture2D)ResourceLoader.Load("res://Assets/bullet_3.png"),
+        (Texture2D)ResourceLoader.Load("res://Assets/bullet_4.png"),
+        (Texture2D)ResourceLoader.Load("res://Assets/emitter.png")
     };
     Main main;
 
-    public Bullet[] Patterns = { new Bullet(), new Gravity(), new Bounce(), new Homing(), 
+    public List<Emitter> Emitters = new List<Emitter>();
+    public int SelectedEmitter = 0;
+    public Bullet[] Behaviours = { new Bullet(), new Gravity(), new Bounce(), new Homing(), 
         new Oscillate(), new Wavy(), new DecayingAngle() };
     public List<float[]> ActiveBullets = new List<float[]>();
     /// <summary>
@@ -66,12 +83,17 @@ public partial class BulletField : Control
 
         if (!main.paused)
         {
+            foreach (var emitter in Emitters)
+            {
+                emitter.Update(new Vector2(MouseCollider.GetCenter().X, MouseCollider.GetCenter().Y), delta);
+            }
+
             foreach (var bullet in ActiveBullets)
             {
                 if ((int)bullet[(int)BulletComponents.Type] > 0 && 
-                    (int)bullet[(int)BulletComponents.Type] < Patterns.Length)
+                    (int)bullet[(int)BulletComponents.Type] < Behaviours.Length)
                 {
-                    Patterns[(int)bullet[(int)BulletComponents.Type]].UpdateBullet(
+                    Behaviours[(int)bullet[(int)BulletComponents.Type]].UpdateBullet(
                         ref bullet[(int)BulletComponents.PositionX], ref bullet[(int)BulletComponents.PositionY], 
                         ref bullet[(int)BulletComponents.DirectionX], 
                         ref bullet[(int)BulletComponents.DirectionY], ref bullet[(int)BulletComponents.Speed], 
@@ -87,6 +109,7 @@ public partial class BulletField : Control
         }
 
         ActiveBullets.RemoveAll(deleteConditions);
+        Emitters.RemoveAll((x) => x.queueDelete);
     }
 
     public override void _Draw()
@@ -106,6 +129,26 @@ public partial class BulletField : Control
             DrawSetTransform(new Vector2(bullet[(int)BulletComponents.PositionX], 
                 bullet[(int)BulletComponents.PositionY]), rotation);
             DrawTexture(sprites[(int)bullet[(int)BulletComponents.Sprite]], -spriteOffset, modulate);
+            
+            if ((int)bullet[(int)BulletComponents.Sprite] == (int)SpriteTypes.Regular)
+            {
+                if (modulate == new Color(0, 0, 0))
+                {
+                    DrawTexture(sprites[(int)SpriteTypes.Small], -spriteOffset, modulate);
+                } else
+                {
+                    DrawTexture(sprites[(int)SpriteTypes.Small], -spriteOffset);
+                }
+            }
+        }
+
+
+        for (int i = Emitters.Count - 1; i >= 0; i--)
+        {
+            Emitter emitter = Emitters[i];
+            DrawSetTransform(emitter.position, 0, null);
+            DrawTexture(sprites[(int)SpriteTypes.Emitter], -(sprites[(int)SpriteTypes.Emitter].GetSize() / 2), 
+                emitter.color);
         }
     }
 
@@ -142,8 +185,8 @@ public partial class BulletField : Control
         float ai3 = 0)
     {
 
-        float[] bullet = new float[] { position.X, position.Y, direction.X, direction.Y, speed, 0, script, 
-            sprite, r, g, b, a, ai1, ai2, ai3 };
+        float[] bullet = new float[] { position.X, position.Y, direction.X, direction.Y, speed, 0, script,
+            (int)Mathf.Clamp(sprite, 0, (int)SpriteTypes.Emitter - 1), r / 255f, g / 255f, b / 255f, a, ai1, ai2, ai3 };
 
         ActiveBullets.Add(bullet);
     }
@@ -196,7 +239,7 @@ public partial class BulletField : Control
 
     public bool CheckOutOfBounds(float[] bullet)
     {
-        int limit = 20;
+        int limit = 50;
         return bullet[(int)BulletComponents.PositionX] >= GetViewportRect().Size.X + limit || 
             bullet[(int)BulletComponents.PositionX] <= -limit ||
             bullet[(int)BulletComponents.PositionY] >= GetViewportRect().Size.Y + limit || 

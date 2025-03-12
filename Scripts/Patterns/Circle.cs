@@ -4,8 +4,6 @@ using System.ComponentModel;
 public class Circle : Pattern
 {
     [Bindable(true)]
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    [Bindable(true)]
     public float BaseRotation { get; set; } = 0;
     [Bindable(true)]
     public float RotationPerFrame { get; set; } = 0.1f;
@@ -13,16 +11,13 @@ public class Circle : Pattern
     public float Disrotation { get; set; } = 0;
     [Bindable(true)]
     public int NumberOfShots { get; set; } = 25;
-    [Bindable(true)]
-    public bool PointType { get; set; } = false;
 
     public override void SetDefaults()
     {
-        Position = new Vector2(width / 2, height / 2);
         base.SetDefaults();
     }
 
-    public override bool PreUpdate(Vector2? mousePos)
+    public override bool PreUpdate(Vector2? mousePos, Vector2 position)
     {
         if (Timer == 0)
         {
@@ -30,8 +25,6 @@ public class Circle : Pattern
             {
                 BaseRotation -= Disrotation;
             }
-            int spriteType = 0;
-            if (!PointType) spriteType = 1;
             Color color = new Color(1, 1, 1);
             for (int i = 0; i < NumberOfShots; i++)
             {
@@ -51,11 +44,11 @@ public class Circle : Pattern
                     }
                 }
 
-                CreateSimple(Position, direction, 300, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                CreateSimple(position, direction, 300, Type, SpriteType, color.R, color.G, color.B, Alpha, 
                     ai1: Ai1, ai2: Ai2, ai3: Ai3);
             }
         }
         BaseRotation += RotationPerFrame;
-        return base.PreUpdate(mousePos);
+        return base.PreUpdate(mousePos, position);
     }
 }

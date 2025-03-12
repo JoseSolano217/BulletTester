@@ -28,8 +28,6 @@ public class Falling : Pattern
     [Bindable(true)]
     public bool SetPosition { get; set; } = false;
     [Bindable(true)]
-    public bool PointType { get; set; } = false;
-    [Bindable(true)]
     public int NumberOfShots { get; set; } = 10;
     [Bindable(true)]
     public float Speed { get; set; } = 125;
@@ -40,12 +38,10 @@ public class Falling : Pattern
     }
 
 
-    public override bool PreUpdate(Vector2? mousePos)
+    public override bool PreUpdate(Vector2? mousePos, Vector2 pos)
     {
         if (Timer == 0)
         {
-            int spriteType = 0;
-            if (!PointType) spriteType = 1;
             Color color = new Color(1, 1, 1);
             float widthOver2 = width / 2;
             float heightOver2 = height / 2;
@@ -79,7 +75,7 @@ public class Falling : Pattern
                         position = new Vector2(widthOver2 + random.RandfRange(-newWidth/2, newWidth / 2), 1);
                     }
 
-                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                    CreateSimple(position, direction, Speed, Type, SpriteType, color.R, color.G, color.B, Alpha, 
                         ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Left)
@@ -97,7 +93,7 @@ public class Falling : Pattern
                         position = new Vector2(1, heightOver2 + random.RandfRange(-newHeight/2, newHeight/2));
                     }
 
-                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                    CreateSimple(position, direction, Speed, Type, SpriteType, color.R, color.G, color.B, Alpha, 
                         ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Bottom)
@@ -115,7 +111,7 @@ public class Falling : Pattern
                         position = new Vector2(widthOver2 + random.RandfRange(-newWidth/2, newWidth / 2), height - 1);
                     }
 
-                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                    CreateSimple(position, direction, Speed, Type, SpriteType, color.R, color.G, color.B, Alpha, 
                         ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
                 if (Right)
@@ -133,11 +129,11 @@ public class Falling : Pattern
                         position = new Vector2(width - 1, heightOver2 + random.RandfRange(-newHeight/2, newHeight/2));
                     }
 
-                    CreateSimple(position, direction, Speed, Type, spriteType, color.R, color.G, color.B, Alpha, 
+                    CreateSimple(position, direction, Speed, Type, SpriteType, color.R, color.G, color.B, Alpha, 
                         ai1: Ai1, ai2: Ai2, ai3: Ai3);
                 }
             }
         }
-        return base.PreUpdate(mousePos);
+        return base.PreUpdate(mousePos, pos);
     }
 }

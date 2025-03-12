@@ -1,20 +1,20 @@
+using BulletTester.Scripts;
 using Godot;
-using System.Collections.Generic;
 
 public partial class Main : Node2D
 {
-    public Node modNode;
     public static BulletField field;
-    RandomNumberGenerator random = new RandomNumberGenerator();
+    public static RandomNumberGenerator random = new RandomNumberGenerator();
     bool mouseColliding = true;
     public Rect2 viewportRect;
 
-    public List<Pattern> allPatterns = new List<Pattern>();
-    public int patternIndex = 0;
-    public int patternChangeTimer = 0;
-    public Pattern myPattern;
+    public Emitter selectedEmitter = null;
+    public Pattern[] allPatterns = {new Circle(), new MultiplePoints(), new Falling(), new Flower(),
+            new Line(), new Aimed() };
     public bool paused = false;
 
+    [Signal]
+    public delegate void ReselectEmitterEventHandler();
     [Signal]
     public delegate void FinishedPatternChangeEventHandler();
     [Signal]
@@ -39,8 +39,8 @@ public partial class Main : Node2D
         viewportRect = GetViewportRect();
         if (!paused)
         {
-            myPattern.Update(new Vector2(field.MouseCollider.GetCenter().X, field.MouseCollider.GetCenter().Y), 
-                delta);
+            /*myPattern.Update(new Vector2(field.MouseCollider.GetCenter().X, field.MouseCollider.GetCenter().Y), 
+                delta);*/
         }
 
         HandleMouseInputs();
@@ -52,6 +52,22 @@ public partial class Main : Node2D
         {
             //GD.Print("Left click pressed");
             mouseColliding = false;
+            bool foundTarget = false;
+            foreach (var emitter in field.Emitters)
+            {
+                if (selectedEmitter == emitter)
+                {
+                    foundTarget = true;
+                    continue;
+                }
+                if (GetViewport().GetMousePosition().DistanceTo(emitter.position) <= 22)
+                {
+                    selectedEmitter = emitter;
+                    SetTarget(emitter);
+                    return;
+                }
+            }
+            if (!foundTarget) selectedEmitter = null;
         } else if (@event.IsActionReleased("mouse_left_click"))
         {
             //GD.Print("Left click released");
@@ -62,8 +78,13 @@ public partial class Main : Node2D
         {
             //GD.Print("Ctrl left click pressed");
             mouseColliding = false;
-            field.MouseCollider = new Aabb(GetViewport().GetMousePosition().X,
-                GetViewport().GetMousePosition().Y, 0, 0, 0, 0);
+            /*field.MouseCollider = new Aabb(GetViewport().GetMousePosition().X,
+                GetViewport().GetMousePosition().Y, 0, 0, 0, 0);*/
+
+            Emitter toAdd = new Emitter(GetViewport().GetMousePosition(), (int)Patterns.Circle);
+            field.Emitters.Add(toAdd);
+            selectedEmitter = toAdd;
+            SetTarget(toAdd);
         }
         else if (@event.IsActionReleased("ctrl_left_click"))
         {
@@ -77,13 +98,31 @@ public partial class Main : Node2D
             Aabb mouseAabb = new Aabb(GetViewport().GetMousePosition().X - 25,
                 GetViewport().GetMousePosition().Y - 25, 0,
                 50, 50, 1);
-            field.Colliders.Add(mouseAabb);
+            //field.Colliders.Add(mouseAabb);
+
+            foreach (var emitter in field.Emitters)
+            {
+                if (GetViewport().GetMousePosition().DistanceTo(emitter.position) <= 20)
+                {
+                    emitter.queueDelete = true;
+                    return;
+                }
+            }
         }
 
         if (@event.IsActionPressed("ctrl_right_click"))
         {
             //GD.Print("Ctrl right click released");
             field.Colliders.Clear();
+
+            foreach (var emitter in field.Emitters)
+            {
+                if (GetViewport().GetMousePosition().DistanceTo(emitter.position) <= 20)
+                {
+                    emitter.process = !emitter.process;
+                    return;
+                }
+            }
         }
 
         if (@event.IsActionPressed("pause"))
@@ -95,6 +134,8 @@ public partial class Main : Node2D
         if (@event.IsActionPressed("delete"))
         {
             field.ClearScreen();
+            selectedEmitter = null;
+            field.Emitters.Clear();
         }
     }
 
@@ -102,72 +143,35 @@ public partial class Main : Node2D
     {
         if (mouseColliding)
         {
-            Aabb mouseAabb = new Aabb(GetViewport().GetMousePosition().X - (25),
-                GetViewport().GetMousePosition().Y - (25), 0,
-                50, 50, 1);
+            Aabb mouseAabb = new Aabb(GetViewport().GetMousePosition().X - (10),
+                GetViewport().GetMousePosition().Y - (10), 0,
+                20, 20, 1);
             field.MouseCollider = mouseAabb;
         }
     }
 
     public void ReloadPatterns()
     {
-        allPatterns.Clear();
-        allPatterns = new List<Pattern> { 
-            new Circle(), 
-            new MultiplePoints(), 
-            new Flower() , 
-            new Line(),
-            new Falling()
-        };
-
-        patternIndex = 0;
-        myPattern = allPatterns[patternIndex];
-
-        myPattern.SetSize(viewportRect.Size.X, viewportRect.Size.Y);
-        /*myPattern.GetType().GetMethod("SetSize").Invoke(myPattern,
-            new object[] { viewportRect.Size.X, viewportRect.Size.Y });
-
-        Delegate foo = new Action<Vector2, Vector2, float, float, float, float, float, float,
-            float, float, float, float, float>((a, b, c, d, e, f, g, h, i, j, k, l, m) => 
-            ProjectileAddAPI(a, b, c, d, e, f, g, h, i, j, k, l, m));*/
-
-
-        myPattern.CreateSimple = field.AddProjectile;
-        /*myPattern.GetType().GetMethod("SetDelegate2")
-            .Invoke(myPattern, new object[] { foo });*/
-        /*(Action<Vector2, Vector2, float, float, float, float, float, float, 
-            float, float, float, float, float>)((a, b, c, d, e, f, g, h, i, j, k, l, m) => 
-            field.AddProjectile(a, b, c, d, e, f, g, h, i, j, k, l, m))*/
-
-        myPattern.SetDefaults();
-        //myPattern.GetType().GetMethod("SetDefaults").Invoke(myPattern, null);
     }
 
-    public void DoNothing()
+    public void SetTarget(Emitter emitter)
     {
+        selectedEmitter = emitter;
 
+        selectedEmitter.SetDefaults(viewportRect.Size, field.AddProjectile);
+
+        EmitSignal(SignalName.FinishedPatternChange);
     }
 
-    public void SetPattern(int newIndex)
+    public void ChangePattern(int patternIndex)
     {
-        patternIndex = newIndex;
-        myPattern = allPatterns[patternIndex];
-
-        myPattern.SetSize(viewportRect.Size.X, viewportRect.Size.Y);
-
-        //myPattern.Connect("BulletCreate", new Callable(field, "AddProjectile"));
-        //myPattern.Connect("SimplifiedBulletCreate", new Callable(field, "AddProjectile"));
-        //myPattern.Create = field.AddProjectile;
-        myPattern.CreateSimple = field.AddProjectile;
-
-        myPattern.SetDefaults();
-        //myPattern.GetType().GetMethod("SetDefaults").Invoke(myPattern, null);
+        if (selectedEmitter == null) return;
+        selectedEmitter.SetPattern(patternIndex, viewportRect.Size);
         EmitSignal(SignalName.FinishedPatternChange);
     }
 
     public void Begin()
     {
-        SetPattern(0);
         field.ClearScreen();
         Control uiControl = (Control)GetNode("UI");
         uiControl.Visible = true;
